@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Control">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="sheet.css">
+
+</head>
+
+
+<body>
+
+    <script>
+        var myPiece;
+
+        function startMove() {
+
+            myPiece = new component(30, 30, "red", 10, 120);
+            myArea.start();
+        }
+
+
+        var myArea = {
+            canvas: document.createElement("canvas"),
+            start: function() {
+
+                this.canvas.width = 400;
+                this.canvas.height = 300;
+                this.context = this.canvas.getContext("2d");
+                document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+                this.interval = setInterval(updateArea, 20);
+            },
+            clear: function() {
+                this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            }
+        }
+
+        function component(width, height, color, x, y) {
+            this.width = width;
+            this.height = height;
+            this.speedX = 0;
+            this.speedY = 0;
+            this.x = x;
+            this.y = y;
+            this.update = function() {
+                ctx = myArea.context;
+                ctx.fillStyle = color;
+                ctx.fillRect(this.x, this.y, this.width, this.height);
+            }
+            this.newPos = function() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+            }
+        }
+
+        function updateArea() {
+            myArea.clear();
+            myPiece.newPos();
+            myPiece.update();
+        }
+
+        function moveup() {
+            myPiece.speedY = -1;
+        }
+
+        function movedown() {
+            myPiece.speedY = 1;
+        }
+
+        function moveleft() {
+            myPiece.speedX = -1;
+        }
+
+        function moveright() {
+            myPiece.speedX = 1;
+        }
+
+        function clearmove() {
+            myPiece.speedX = 0;
+            myPiece.speedY = 0;
+        }
+
+        var x = document.getElementById("move").innerHTML = startMove();
+    </script>
+      <p id="move "></p>       
+    <br><br>
+    <div class="container">
+        <div class="col-lg-4">
+
+            <p style="text-align:center;">
+                <button onclick="moveup() " name="Forward " id="button">Forwards</button><br><br>
+            </p>
+            <p style="text-align:center; ">
+                <button onclick="moveleft() " name="Left " id="button">Left</button>
+                    <button onclick="clearmove() " name="Stop " id="button">STOP</button>
+                <button onclick="moveright() " name="Right " id="button">Right</button><br><br>
+            </p>
+            <p style="text-align:center; ">
+                <button onclick="movedown() " name="Backward " id="button">Backward</button>
+            </p>
+        </div>
+       
+    </div>
+
+    </body>
+</html>
